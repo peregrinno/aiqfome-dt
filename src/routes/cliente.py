@@ -9,7 +9,7 @@ route = APIRouter()
 
 
 @route.post("/clientes", response_model=ClienteResponse, status_code=status.HTTP_201_CREATED, description="Cria um novo cliente")
-async def create_cliente(
+async def criar_cliente(
     cliente_data: CreateCliente = Depends(check_user_not_exists),
     auth_controller: AuthController = Depends(get_auth_controller)
 ):
@@ -25,12 +25,12 @@ async def login(
 
 
 @route.get("/clientes/me", response_model=ClienteResponse, description="Retorna os dados do cliente autenticado")
-async def get_current_cliente_data(current_user: Clientes = Depends(get_current_user)):
+async def get_cliente_atual(current_user: Clientes = Depends(get_current_user)):
     return current_user
 
 
 @route.put("/clientes/me", response_model=ClienteResponse, description="Atualiza os dados do cliente autenticado")
-async def update_current_cliente_data(
+async def atualizar_cliente(
     cliente_data: UpdateCliente,
     current_user: Clientes = Depends(get_current_user),
     user_controller: UserController = Depends(get_user_controller)
@@ -38,7 +38,7 @@ async def update_current_cliente_data(
     return user_controller.update_cliente(current_user, cliente_data)
 
 @route.delete("/clientes/me", description="Deleta o cliente autenticado")
-async def delete_current_cliente_data(
+async def deletar_cliente_atual(
     current_user: Clientes = Depends(get_current_user),
     user_controller: UserController = Depends(get_user_controller)
 ):

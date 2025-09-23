@@ -9,6 +9,15 @@ from .cliente import (
     TokenData,
 )
 
+from .produto import (
+    Produto,
+    ProdutoSimples,
+    ProdutoFavorito,
+    ProdutosList,
+    ProdutosFavoritosList,
+    Rating,
+)
+
 __all__ = [
     "BaseCliente",
     "CreateCliente",
@@ -18,4 +27,10 @@ __all__ = [
     "LoginData",
     "Token",
     "TokenData",
+    "Produto",
+    "ProdutoSimples",
+    "ProdutoFavorito",
+    "ProdutosList",
+    "ProdutosFavoritosList",
+    "Rating",
 ]

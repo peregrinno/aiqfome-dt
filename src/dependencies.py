@@ -6,7 +6,7 @@ from fastapi.security import OAuth2PasswordBearer
 from .models import Clientes
 from .database import Session
 from .interfaces import CreateCliente
-from .controllers import AuthController, UserController
+from .controllers import AuthController, UserController, FavoritoController
 from settings import api_settings
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/v1/auth/login")
@@ -47,6 +47,13 @@ async def get_user_controller(
     session: Session = Depends(get_session), #type: ignore
 ) -> UserController:
     return UserController(
+        session
+    )
+
+async def get_favorito_controller(
+    session: Session = Depends(get_session), #type: ignore
+) -> FavoritoController:
+    return FavoritoController(
         session
     )
     
