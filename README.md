@@ -1,0 +1,255 @@
+# API AiQfome - Desafio Técnico
+
+API para gerenciar clientes e seus produtos favoritos.
+
+Explicações das tomadas de decição em [Disclaimers.md](Disclaimers.md)
+
+## Funcionalidades
+
+- Autenticação de clientes
+- Gerenciamento de produtos favoritos
+- Integração com API externa de produtos
+
+## Tecnologias Utilizadas
+
+- Python 3.11
+- FastAPI
+- SQLAlchemy
+- PostgreSQL
+- Docker
+
+## Executando com Docker
+
+### Pré-requisitos
+
+- Docker
+- Docker Compose
+
+### Passos para execução
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/peregrinno/aiqfome-dt.git
+cd aiqfome-dt
+```
+
+2. Inicie os containers com Docker Compose:
+
+```bash
+docker-compose up -d
+```
+
+3. Acesse a API em [http://localhost:8000](http://localhost:8000)
+4. Acesse a documentação da API em [http://localhost:8000/docs](http://localhost:8000/docs)
+
+### Observações
+
+- O PostgreSQL está configurado para usar a porta 55432 para evitar conflitos com instalações locais
+- Os dados do PostgreSQL são persistidos em um volume Docker
+
+## Executando localmente
+
+### Pré-requisitos
+
+- Python 3.11
+- PostgreSQL 17
+
+### Configuração do PostgreSQL
+
+1. Instale o PostgreSQL seguindo as instruções oficiais para seu sistema operacional: [Download PostgreSQL](https://www.postgresql.org/download/)
+2. Crie um banco de dados para a aplicação:
+
+```bash
+# Acesse o PostgreSQL como usuário postgres
+psql -U postgres
+
+# Crie o banco de dados
+CREATE DATABASE aiqfome_bd;
+
+# Verifique se o banco foi criado
+\l
+
+# Saia do console do PostgreSQL
+\q
+```
+
+### Configuração do Ambiente
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/peregrinno/aiqfome-dt.git
+cd aiqfome-dt
+```
+
+2. Crie e ative um ambiente virtual:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # Linux/Mac
+.venv\Scripts\activate    # Windows
+```
+
+3. Instale as dependências:
+
+```bash
+pip install -r requirements.txt
+```
+
+4. Configure as variáveis de ambiente:
+
+   - Copie o arquivo `.env.example` para `.env`:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   - Edite o arquivo `.env` com suas configurações:
+
+   ```
+   API_CORS_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:8000
+   API_SECRET_KEY=?Z0JBsN4Lb1LdEe8aFxhH-g  # Altere para uma chave segura em produção
+   API_LOG_LEVEL=debug  # Use 'debug' durante desenvolvimento e 'info' em produção
+
+   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/aiqfome_bd
+   ```
+
+   > **Nota**: Substitua `postgres:postgres` por seu usuário e senha do PostgreSQL, se diferentes
+   >
+5. Execute a aplicação:
+
+```bash
+python webserver.py
+```
+
+6. Acesse a API em [http://localhost:8000](http://localhost:8000)
+7. Acesse a documentação interativa da API em [http://localhost:8000/docs](http://localhost:8000/docs)
+
+## Endpoints
+
+### Autenticação
+
+- `POST /v1/auth/clientes` - Registrar um novo cliente
+- `POST /v1/auth/login` - Autenticar um cliente
+- `GET /v1/auth/clientes/me` - Obter dados do cliente autenticado
+- `PUT /v1/auth/clientes/me` - Atualizar dados do cliente autenticado
+- `DELETE /v1/auth/clientes/me` - Excluir o cliente autenticado
+
+### Produtos
+
+- `GET /v1/produtos` - Listar todos os produtos disponíveis
+- `GET /v1/produtos/{produto_id}` - Obter detalhes de um produto específico
+- `GET /v1/produtos/favoritos` - Listar os produtos favoritos do cliente autenticado
+- `POST /v1/produtos/favoritos` - Adicionar um produto aos favoritos
+- `DELETE /v1/produtos/favoritos/{produto_id}` - Remover um produto dos favoritos
+
+### Health Check
+
+- `GET /v1/health-check` - Verificar o status da API
+
+## Estrutura do Projeto
+
+```
+.
+├── Dockerfile              # Configuração para construção da imagem Docker
+├── README.md              # Documentação do projeto
+├── docker-compose.yml     # Configuração para orquestração dos serviços
+├── pyproject.toml        # Configuração do projeto Python
+├── requirements.txt      # Dependências do projeto
+├── settings.py           # Configurações da aplicação
+├── version               # Versão atual do projeto
+├── webserver.py          # Ponto de entrada da aplicação
+├── src/                  # Código fonte da aplicação
+│   ├── controllers/      # Controladores da aplicação
+│   ├── database.py       # Configuração do banco de dados
+│   ├── dependencies.py    # Dependências da aplicação
+│   ├── gateway.py        # Configuração das rotas da API
+│   ├── init_db.py        # Inicialização do banco de dados
+│   ├── interfaces/       # Interfaces Pydantic
+│   ├── models/           # Modelos SQLAlchemy
+│   ├── routes/           # Rotas da API
+│   └── services/         # Serviços externos
+```
+
+## Solução de Problemas Comuns
+
+### Erro de conexão com o banco de dados
+
+**Problema**: Erro ao conectar ao banco de dados PostgreSQL.
+
+**Solução**:
+
+1. Verifique se o PostgreSQL está em execução:
+
+   ```bash
+   # Windows
+   sc query postgresql
+
+   # Linux
+   systemctl status postgresql
+   ```
+2. Verifique se as credenciais no arquivo `.env` estão corretas.
+3. Verifique se o banco de dados existe:
+
+   ```bash
+   psql -U postgres -c "\l"
+   ```
+4. Crie o banco de dados se não existir:
+
+   ```bash
+   psql -U postgres -c "CREATE DATABASE aiqfome_bd;"
+   ```
+
+### Erro ao iniciar a aplicação com Docker
+
+**Problema**: Contêineres não iniciam ou a API não está acessível.
+
+**Solução**:
+
+1. Verifique os logs dos contêineres:
+
+   ```bash
+   docker compose logs
+   ```
+2. Reinicie os contêineres:
+
+   ```bash
+   docker compose down
+   docker compose up -d
+   ```
+3. Verifique se as portas não estão sendo usadas por outros serviços:
+
+   ```bash
+   # Windows
+   netstat -ano | findstr :8000
+   netstat -ano | findstr :55432
+
+   # Linux
+   netstat -tulpn | grep 8000
+   netstat -tulpn | grep 55432
+   ```
+
+## Desenvolvimento
+
+### Versionamento
+
+Este projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/).
+
+### Dependências de Desenvolvimento
+
+Para desenvolvimento, recomenda-se instalar as dependências adicionais:
+
+```bash
+pip install isort
+```
+
+### Formatação de Código
+
+Para formatar o código:
+
+isort .
+
+## Licença
+
+Este projeto é licenciado sob a [Licença MIT](LICENSE).

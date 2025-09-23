@@ -6,7 +6,6 @@ from passlib.context import CryptContext
 
 from settings import api_settings
 
-
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 

@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  api-aiqfome:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - API_CORS_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:8000
+      - API_SECRET_KEY=?Z0JBsN4Lb1LdEe8aFxhH-g
+      - API_LOG_LEVEL=debug
+      - DATABASE_URL=postgresql://postgres:postgres@db-aiqfome:5432/aiqfome_bd
+    depends_on:
+      db-aiqfome:
+        condition: service_healthy
+    networks:
+      - aiqfome-network
+    restart: unless-stopped
+    # Healthcheck para a API
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/health-check/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  db-aiqfome:
+    image: postgres:17
+    ports:
+      - "55432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=aiqfome_bd
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - aiqfome-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+networks:
+  aiqfome-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

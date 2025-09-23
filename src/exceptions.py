@@ -1,6 +1,7 @@
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
 
+
 class BaseError(HTTPException):
     code = status.HTTP_400_BAD_REQUEST
     description = "A base para todas as exceções personalizadas"

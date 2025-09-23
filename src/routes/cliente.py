@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, status
 
-from src.interfaces import CreateCliente, UpdateCliente, ClienteResponse, LoginData, Token
 from src.controllers import AuthController, UserController
-from src.dependencies import get_auth_controller, get_current_user, check_user_not_exists, get_user_controller
+from src.dependencies import (check_user_not_exists, get_auth_controller,
+                              get_current_user, get_user_controller)
+from src.interfaces import (ClienteResponse, CreateCliente, LoginData, Token,
+                            UpdateCliente)
 from src.models import Clientes
 
 route = APIRouter()

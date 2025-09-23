@@ -1,18 +1,14 @@
-from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from fastapi.exceptions import RequestValidationError
-from fastapi.middleware.cors import CORSMiddleware
 import logging
 
+from fastapi import FastAPI, Request
+from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+
 from settings import api_settings
-from src import (
-    AuthenticationError,
-    BaseError,
-    InternalServerError,
-)
+from src import AuthenticationError, BaseError, InternalServerError
 from src.gateway import api_router
 from src.init_db import init_db
-
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -43,7 +39,12 @@ app.include_router(api_router, prefix="/v1")
 @app.on_event("startup")
 async def startup_event():
     logger.info("Inicializando o banco de dados...")
-    init_db()
+    if init_db(max_retries=10, retry_interval=3):
+        logger.info("Banco de dados inicializado com sucesso!")
+    else:
+        logger.warning("Não foi possível inicializar o banco de dados após várias tentativas.")
+        logger.warning("A aplicação continuará funcionando, mas algumas funcionalidades podem não estar disponíveis.")
+    
     logger.info("Aplicação inicializada com sucesso!")
 
 @app.exception_handler(BaseError)

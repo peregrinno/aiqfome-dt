@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, ForeignKey, String
+from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
 from .base_model import BaseModel
 from .clientes import Clientes
+
 
 class Favoritos(BaseModel):
     __tablename__ = "favoritos"

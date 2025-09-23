@@ -1,6 +1,8 @@
-from fastapi import APIRouter
-from settings import api_settings
 from datetime import datetime
+
+from fastapi import APIRouter
+
+from settings import api_settings
 
 route = APIRouter()
 

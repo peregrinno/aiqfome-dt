@@ -1,7 +1,2 @@
-from .exceptions import (
-    BaseError, 
-    AuthenticationError, 
-    InternalServerError, 
-    ConflictError, 
-    BadRequestError
-)
+from .exceptions import (AuthenticationError, BadRequestError, BaseError,
+                         ConflictError, InternalServerError)

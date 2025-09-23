@@ -1,10 +1,12 @@
-from sqlalchemy.orm import Session
-from fastapi import HTTPException, status
 from typing import List
 
-from src.models import Clientes, Favoritos
+from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
+
 from src.interfaces import ProdutoSimples
+from src.models import Clientes, Favoritos
 from src.services.produto_service import ProdutoService
+
 
 class FavoritoController:
     def __init__(self, session: Session):

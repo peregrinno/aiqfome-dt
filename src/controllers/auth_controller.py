@@ -1,9 +1,9 @@
-from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
+from sqlalchemy.orm import Session
 
-from src.models import Clientes
-from src.auth import verify_password, get_password_hash, create_access_token
+from src.auth import create_access_token, get_password_hash, verify_password
 from src.interfaces import CreateCliente, LoginData, Token
+from src.models import Clientes
 
 
 class AuthController:

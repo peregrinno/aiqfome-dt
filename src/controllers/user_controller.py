@@ -1,7 +1,7 @@
-from sqlalchemy.orm import Session
 from fastapi import HTTPException, status
-from src.interfaces import UpdateCliente
+from sqlalchemy.orm import Session
 
+from src.interfaces import UpdateCliente
 from src.models import Clientes
 
 

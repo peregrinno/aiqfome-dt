@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends, status, Path, HTTPException
 from typing import List
 
-from src.interfaces import Produto, ProdutoSimples, ProdutoFavorito
-from src.services.produto_service import ProdutoService
+from fastapi import APIRouter, Depends, HTTPException, Path, status
+
 from src.controllers import FavoritoController
 from src.dependencies import get_current_user, get_favorito_controller
+from src.interfaces import Produto, ProdutoFavorito, ProdutoSimples
 from src.models import Clientes
+from src.services.produto_service import ProdutoService
 
 route = APIRouter()
 

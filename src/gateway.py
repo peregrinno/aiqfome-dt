@@ -1,7 +1,6 @@
 from fastapi import APIRouter
 
-from .routes import cliente_route, produto_route, health_check_route
-
+from .routes import cliente_route, health_check_route, produto_route
 
 api_router = APIRouter()
 
