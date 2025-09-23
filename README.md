@@ -6,7 +6,7 @@ Explicações das tomadas de decição em [Leia-me.md](Leia-me.md)
 
 # Documentação REST
 
-aiqfome-peregrinno.apidog.io [Leia-me.md](Leia-me.md)
+[aiqfome-peregrinno.apidog.io](aiqfome-peregrinno.apidog.io)
 
 ## Funcionalidades
 
