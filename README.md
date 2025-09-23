@@ -4,6 +4,10 @@ API para gerenciar clientes e seus produtos favoritos.
 
 Explicações das tomadas de decição em [Leia-me.md](Leia-me.md)
 
+# Documentação REST
+
+aiqfome-peregrinno.apidog.io [Leia-me.md](Leia-me.md)
+
 ## Funcionalidades
 
 - Autenticação de clientes
