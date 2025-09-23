@@ -104,64 +104,6 @@ docker-compose up -d
 │   └── services/         # Serviços externos
 ```
 
-## Solução de Problemas Comuns
-
-### Erro de conexão com o banco de dados
-
-**Problema**: Erro ao conectar ao banco de dados PostgreSQL.
-
-**Solução**:
-
-1. Verifique se o PostgreSQL está em execução:
-
-   ```bash
-   # Windows
-   sc query postgresql
-
-   # Linux
-   systemctl status postgresql
-   ```
-2. Verifique se as credenciais no arquivo `.env` estão corretas.
-3. Verifique se o banco de dados existe:
-
-   ```bash
-   psql -U postgres -c "\l"
-   ```
-4. Crie o banco de dados se não existir:
-
-   ```bash
-   psql -U postgres -c "CREATE DATABASE aiqfome_bd;"
-   ```
-
-### Erro ao iniciar a aplicação com Docker
-
-**Problema**: Contêineres não iniciam ou a API não está acessível.
-
-**Solução**:
-
-1. Verifique os logs dos contêineres:
-
-   ```bash
-   docker compose logs
-   ```
-2. Reinicie os contêineres:
-
-   ```bash
-   docker compose down
-   docker compose up -d
-   ```
-3. Verifique se as portas não estão sendo usadas por outros serviços:
-
-   ```bash
-   # Windows
-   netstat -ano | findstr :8000
-   netstat -ano | findstr :55432
-
-   # Linux
-   netstat -tulpn | grep 8000
-   netstat -tulpn | grep 55432
-   ```
-
 ## Cache de Produtos
 
 O sistema utiliza Redis para armazenar em cache os produtos obtidos da API externa (fakestoreapi.com). Isso proporciona:
