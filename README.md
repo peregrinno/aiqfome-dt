@@ -16,6 +16,7 @@ Explicações das tomadas de decição em [Disclaimers.md](Disclaimers.md)
 - FastAPI
 - SQLAlchemy
 - PostgreSQL
+- Redis (cache)
 - Docker
 
 ## Executando com Docker
@@ -46,14 +47,18 @@ docker-compose up -d
 ### Observações
 
 - O PostgreSQL está configurado para usar a porta 55432 para evitar conflitos com instalações locais
-- Os dados do PostgreSQL são persistidos em um volume Docker
+- O Redis está configurado para usar a porta 56379 para evitar conflitos com instalações locais
+- Os dados do PostgreSQL e Redis são persistidos em volumes Docker
+- O sistema utiliza Redis para cache dos produtos da API externa
+- Cache automático atualizado periodicamente em segundo plano
 
 ## Executando localmente
 
 ### Pré-requisitos
 
 - Python 3.11
-- PostgreSQL 17
+- PostgreSQL 17 ou superior
+- Redis (opcional, para cache)
 
 ### Configuração do PostgreSQL
 
@@ -73,6 +78,28 @@ CREATE DATABASE aiqfome_bd;
 # Saia do console do PostgreSQL
 \q
 ```
+
+### Configuração do Redis (opcional)
+
+1. Instale o Redis seguindo as instruções oficiais para seu sistema operacional: [Download Redis](https://redis.io/download)
+
+2. Inicie o servidor Redis:
+
+```bash
+# Linux/Mac
+redis-server
+
+# Windows (usando WSL ou serviço do Windows)
+redis-server.exe
+```
+
+3. Verifique se o Redis está funcionando:
+
+```bash
+redis-cli ping
+```
+
+Se receber "PONG" como resposta, o Redis está funcionando corretamente.
 
 ### Configuração do Ambiente
 
@@ -113,6 +140,10 @@ pip install -r requirements.txt
    API_LOG_LEVEL=debug  # Use 'debug' durante desenvolvimento e 'info' em produção
 
    DATABASE_URL=postgresql://postgres:postgres@localhost:5432/aiqfome_bd
+   
+   # Configuração do Redis (opcional)
+   REDIS_URL=redis://localhost:6379/0
+   REDIS_TTL=3600  # Tempo de vida do cache em segundos (1 hora)
    ```
 
    > **Nota**: Substitua `postgres:postgres` por seu usuário e senha do PostgreSQL, se diferentes
@@ -143,6 +174,8 @@ python webserver.py
 - `GET /v1/produtos/favoritos` - Listar os produtos favoritos do cliente autenticado
 - `POST /v1/produtos/favoritos` - Adicionar um produto aos favoritos
 - `DELETE /v1/produtos/favoritos/{produto_id}` - Remover um produto dos favoritos
+- `POST /v1/produtos/cache/update` - Atualizar o cache de produtos (requer chave de API)
+- `DELETE /v1/produtos/cache` - Limpar o cache de produtos (requer chave de API)
 
 ### Health Check
 
@@ -229,6 +262,36 @@ python webserver.py
    netstat -tulpn | grep 8000
    netstat -tulpn | grep 55432
    ```
+
+## Cache de Produtos
+
+O sistema utiliza Redis para armazenar em cache os produtos obtidos da API externa (fakestoreapi.com). Isso proporciona:
+
+- Melhor desempenho nas consultas
+- Menor dependência da API externa
+- Redução de tráfego de rede
+
+### Atualização Automática
+
+O cache é atualizado automaticamente em segundo plano, com intervalo configurado pela variável `REDIS_TTL` (padrão: 1 hora).
+
+### Atualização Manual
+
+Você pode atualizar o cache manualmente de duas formas:
+
+1. Usando a API (requer chave de API):
+
+```bash
+curl -X POST http://localhost:8000/v1/produtos/cache/update -H "X-API-Key: ?Z0JBsN4Lb1LdEe8aFxhH-g"
+```
+
+2. Executando o script de atualização:
+
+```bash
+python update_cache.py
+```
+
+Este script pode ser configurado como uma tarefa agendada (cron job) para atualizações periódicas.
 
 ## Desenvolvimento
 

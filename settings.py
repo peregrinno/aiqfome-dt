@@ -34,12 +34,21 @@ class APISettings(BaseSettings):
 
 
 class DatabaseSettings(BaseSettings):
-    URL: str = "postgresql://postgres:De1a8@localhost:5432/aiqfome_bd"
+    URL: str = "postgresql://postgres:postgres@localhost:5432/aiqfome_bd"
     FALLBACK_URL: str = "sqlite:///./aiqfome.db"
 
     class Config:
         env_prefix = "DATABASE_"
 
 
+class RedisSettings(BaseSettings):
+    URL: str = "redis://localhost:6379/0"
+    TTL: int = 3600 
+
+    class Config:
+        env_prefix = "REDIS_"
+
+
 api_settings = APISettings()
 database_settings = DatabaseSettings()
+redis_settings = RedisSettings()
