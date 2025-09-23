@@ -2,7 +2,7 @@
 
 API para gerenciar clientes e seus produtos favoritos.
 
-Explicações das tomadas de decição em [Leia-me.md](Leia-me.md)
+Explicações das tomadas de decisão em [Leia-me.md](Leia-me.md)
 
 # Documentação REST
 
