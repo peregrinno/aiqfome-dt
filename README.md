@@ -2,7 +2,7 @@
 
 API para gerenciar clientes e seus produtos favoritos.
 
-Explicações das tomadas de decição em [Disclaimers.md](Disclaimers.md)
+Explicações das tomadas de decição em [Leia-me.md](Leia-me.md)
 
 ## Funcionalidades
 
@@ -82,7 +82,6 @@ CREATE DATABASE aiqfome_bd;
 ### Configuração do Redis (opcional)
 
 1. Instale o Redis seguindo as instruções oficiais para seu sistema operacional: [Download Redis](https://redis.io/download)
-
 2. Inicie o servidor Redis:
 
 ```bash
@@ -140,7 +139,7 @@ pip install -r requirements.txt
    API_LOG_LEVEL=debug  # Use 'debug' durante desenvolvimento e 'info' em produção
 
    DATABASE_URL=postgresql://postgres:postgres@localhost:5432/aiqfome_bd
-   
+
    # Configuração do Redis (opcional)
    REDIS_URL=redis://localhost:6379/0
    REDIS_TTL=3600  # Tempo de vida do cache em segundos (1 hora)
