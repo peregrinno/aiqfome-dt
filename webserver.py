@@ -21,6 +21,12 @@ app = FastAPI(
     title=api_settings.TITLE,
     version=api_settings.VERSION,
     openapi_url="/openapi.json",
+    description="API AiQfome - Desafio técnico - API para adicionar favoritar produtos",
+    contact={
+        "name": "AiQfome",
+        "url": "https://github.com/peregrinno/aiqfome-dt",
+        "email": "joseluan74@gmail.com",
+    }
 )
 
 origins = api_settings.CORS_ORIGINS
@@ -83,5 +89,5 @@ if __name__ == "__main__":
         "webserver:app",
         host=api_settings.HOST,
         port=api_settings.PORT,
-        reload=True if api_settings.LOG_LEVEL == "debug" else False
+        reload=api_settings.LOG_LEVEL == "debug"
     )
