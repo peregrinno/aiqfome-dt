@@ -2,6 +2,10 @@
 
 Fiz em FastAPI pois é uma tecnologia que provê um alta quantidade de recursos modernos para construção de APIs em Python... Porém pensei bastante antes porque eu tava em duvida entre ele e o Django com Django Ninja que iria prover mais elegancia na parte de migrações e organização de dados.
 
+## Gerenciador de dependencias e Docker
+
+Usei para gerenciar as dependências o gerenciador uv da astral que é estupidamente mais rapido que o pip, escrito em Rust <a href="https://docs.astral.sh/uv/">Docs do uv</a>, tambem tem imagem Docker que serve o python usando Cython (transpilação de python para C) o que deixa tanto a instalação das dependencias muito rapida, os locks entre as dependencias e a execução do codigo.
+
 ## Estrutura
 
 Eu usei um estrutura padrão de models, controllers e routes para organizar melhor o código e facilitar a manutenção, tentando ao maximo seguir os padrões de boas praticas e reaproveitar código..
